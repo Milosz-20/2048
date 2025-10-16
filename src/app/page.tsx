@@ -1,29 +1,36 @@
+import { Tile } from "@/components/tile";
+import { TileContainer } from "@/components/TileContainer";
 import { Card } from "@/components/ui/card";
 import { TypographyCard } from "@/components/ui/typography";
 import Image from "next/image";
+export type Tile = {
+    id: number,
+    row: number,
+    col: number,
+    value: number
+  }
 
-const table = [
-  [0,0,0,0],
-  [0,0,0,0],
-  [0,0,2,0],
-  [0,0,0,0]
+const tiles: Tile[] = [ 
+  { id: 1, row: 0, col: 0, value: 2 },
+  { id: 2, row: 2, col: 2, value: 4 }
 ]
 
 export default function Home() {
   return (
     <div className="w-full h-full flex justify-center mt-[100px]">
-      <Card className="w-[600px] h-[600px] grid grid-cols-4 grid-rows-4 p-4 gap-4 bg-slate-100">
-        {table.flat().map((value, index) => (
-          value !== 0 ? (
-            <Card key={index} className="bg-white flex items-center justify-center rounded-xs">
-            <TypographyCard>{value}</TypographyCard>
-          </Card>
-          ) : (
-            <Card key={index} className="rounded-xs">
-          </Card>
-          )
+      <TileContainer className="w-[600px] h-[600px] bg-orange-100">
+        {tiles.map((tile, index) => (
+          <Tile 
+            key={tile.id} 
+            tile={{
+              id: tile.id,
+              row: tile.row,
+              col: tile.col,
+              value: tile.value
+            }} 
+          />
         ))}
-      </Card>
+      </TileContainer>
     </div>
   );
 }
