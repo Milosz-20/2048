@@ -31,7 +31,7 @@ export default function Game() {
       </div>
       <div className="w-full h-full flex justify-center items-center pt-[100px]">
         <TileContainer
-          className="bg-orange-100 dark:bg-slate-800"
+          className="bg-zinc-300 dark:bg-zinc-800"
           style={{
             width: BOARD_SIZE,
             height: BOARD_SIZE,
