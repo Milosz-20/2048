@@ -1,72 +1,49 @@
 'use client';
 
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Tile } from '@/components/tile';
-import { TileContainer } from '@/components/TileContainer';
-import { BOARD_SIZE, GRID_SIZE } from '@/lib/game-config';
-import { createInitialState, move } from '@/lib/game-utils';
-import { Direction, GameState } from '@/lib/types';
-import { useEffect, useState } from 'react';
+import { TileContainer } from '@/components/tile-container';
+import { BOARD_SIZE } from '@/lib/game-config';
+import { Direction } from '@/lib/types';
+import { useGameStore } from '@/store/use-game-store';
+import { AnimatePresence } from 'motion/react';
+import { useEffect } from 'react';
+import { useKeyboardInput } from '../hooks/use-keyboard-input';
 
-export default function Home() {
-  const [state, setState] = useState<GameState>(() =>
-    createInitialState(GRID_SIZE)
-  );
+export default function Game() {
+  const { tiles, newGame, move } = useGameStore();
 
+  // Rozpocznij nową grę przy montowaniu komponentu
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      let direction: Direction | null = null;
+    newGame();
+  }, [newGame]);
 
-      switch (event.key) {
-        case 'ArrowLeft':
-          direction = Direction.Left;
-          break;
-        case 'ArrowRight':
-          direction = Direction.Right;
-          break;
-        case 'ArrowUp':
-          direction = Direction.Up;
-          break;
-        case 'ArrowDown':
-          direction = Direction.Down;
-          break;
-        default:
-          return;
-      }
+  const handleMove = (direction: Direction) => {
+    move(direction);
+  };
 
-      if (direction) {
-        event.preventDefault();
-        setState((prevState) => move(prevState, direction!));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+  useKeyboardInput(handleMove);
 
   return (
-    <div className="w-full h-full flex justify-center mt-[100px]">
-      <TileContainer
-        className="bg-orange-100"
-        style={{
-          width: BOARD_SIZE,
-          height: BOARD_SIZE,
-        }}
-      >
-        {state.tiles.map((tile) => (
-          <Tile
-            key={tile.id}
-            tile={{
-              id: tile.id,
-              value: tile.value,
-              row: tile.row,
-              col: tile.col,
-            }}
-          />
-        ))}
-      </TileContainer>
+    <div className="w-full h-full relative">
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
+      <div className="w-full h-full flex justify-center items-center pt-[100px]">
+        <TileContainer
+          className="bg-orange-100 dark:bg-slate-800"
+          style={{
+            width: BOARD_SIZE,
+            height: BOARD_SIZE,
+          }}
+        >
+          <AnimatePresence initial={false}>
+            {tiles.map((tile) => (
+              <Tile key={tile.id} tile={tile} />
+            ))}
+          </AnimatePresence>
+        </TileContainer>
+      </div>
     </div>
   );
 }

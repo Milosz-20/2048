@@ -1,0 +1,102 @@
+import { MOVE_ANIMATION_DURATION } from '@/lib/game-config';
+import {
+  addRandomTile,
+  createInitialState,
+  createInitialTiles,
+  move,
+} from '@/lib/game-logic';
+import { Direction, GameState, Tile } from '@/lib/types';
+import { create } from 'zustand';
+
+interface GameActions {
+  newGame: () => void;
+  move: (direction: Direction) => void;
+  lock: () => void;
+  unlock: () => void;
+  addTile: (tile: Tile) => void;
+  setTiles: (tiles: Tile[]) => void;
+  setScore: (score: number) => void;
+  setGameOver: (gameOver: boolean) => void;
+}
+
+export const useGameStore = create<GameState & GameActions>((set, get) => ({
+  // --- STAN POCZĄTKOWY ---
+  ...createInitialState(),
+
+  // --- PODSTAWOWE AKCJE ---
+  newGame: () => {
+    const initialState = createInitialState();
+    const freshTiles = createInitialTiles(initialState);
+    set({
+      tiles: freshTiles,
+      score: 0,
+      isLocked: false,
+      gameOver: false,
+    });
+  },
+
+  move: (direction) => {
+    const state = get();
+    if (state.isLocked || state.gameOver) return;
+
+    set({ isLocked: true });
+
+    const newState = move(state, direction);
+
+    // Sprawdź czy coś się zmieniło - porównaj pozycje kafelków i ilość (merge)
+    const oldPositions = state.tiles
+      .filter((t) => !t.isMerging)
+      .map((t) => `${t.id}:${t.row},${t.col}`)
+      .sort()
+      .join('|');
+    const newPositions = newState.tiles
+      .filter((t) => !t.isMerging)
+      .map((t) => `${t.id}:${t.row},${t.col}`)
+      .sort()
+      .join('|');
+    const hasChanged = oldPositions !== newPositions;
+
+    // Ustaw nowy stan BEZ dodawania nowego kafelka
+    set({
+      tiles: newState.tiles,
+      score: newState.score,
+      gameOver: newState.gameOver,
+    });
+
+    setTimeout(() => {
+      // Usuń tile'y oznaczone jako isMerging i flagi animacji po zakończeniu animacji
+      const currentState = get();
+      const tilesWithoutMerging = currentState.tiles
+        .filter((tile) => !tile.isMerging)
+        .map((tile) => {
+          // Usuń flagi animacji po zakończeniu
+          const { mergedFrom, isNew, ...cleanTile } = tile;
+          return cleanTile;
+        });
+
+      // Dodaj nowy kafelek DOPIERO PO zakończeniu animacji
+      let finalTiles = tilesWithoutMerging;
+      if (hasChanged) {
+        const stateWithNewTile = addRandomTile({
+          ...currentState,
+          tiles: tilesWithoutMerging,
+        });
+        finalTiles = stateWithNewTile.tiles;
+      }
+
+      set({ tiles: finalTiles, isLocked: false });
+    }, MOVE_ANIMATION_DURATION);
+  },
+
+  lock: () => set({ isLocked: true }),
+  unlock: () => set({ isLocked: false }),
+
+  addTile: (tile) => {
+    const { tiles } = get();
+    set({ tiles: [...tiles, tile] });
+  },
+
+  setTiles: (tiles) => set({ tiles }),
+  setScore: (score) => set({ score }),
+  setGameOver: (gameOver) => set({ gameOver }),
+}));
