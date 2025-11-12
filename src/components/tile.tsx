@@ -16,6 +16,7 @@ import {
 import { Tile as TileType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
+import { TypographyH1, TypographyH2, TypographyH3 } from './ui/typography';
 
 interface TileProps extends React.ComponentProps<'div'> {
   tile: TileType;
@@ -74,12 +75,14 @@ export function Tile({ className, tile, ...props }: TileProps) {
         className={cn(
           TILE_COLORS[tile.value] || 'bg-gray-400',
           TILE_TEXT_COLORS[tile.value] || 'text-white',
-          'h-full w-full flex items-center justify-center rounded-xs border font-bold text-2xl',
+          'h-full w-full flex items-center justify-center rounded-xs border',
           className
         )}
         {...props}
       >
-        {tile.value}
+        <TypographyH2 className='p-0'>
+          {tile.value}
+        </TypographyH2>
       </div>
     </motion.div>
   );

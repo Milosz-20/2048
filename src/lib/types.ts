@@ -12,6 +12,7 @@ export interface GameState {
   tiles: Tile[];
   size: number;
   score: number;
+  bestScore: number;
   isLocked: boolean; // Czy użytkownik może wykonać ruch (blokada podczas animacji)
   gameOver?: boolean; // Czy gra się skończyła (brak możliwych ruchów)
 }

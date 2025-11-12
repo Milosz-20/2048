@@ -16,6 +16,7 @@ interface GameActions {
   addTile: (tile: Tile) => void;
   setTiles: (tiles: Tile[]) => void;
   setScore: (score: number) => void;
+  setBestScore: (bestScore: number) => void;
   setGameOver: (gameOver: boolean) => void;
 }
 
@@ -30,6 +31,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     set({
       tiles: freshTiles,
       score: 0,
+      bestScore: get().bestScore,
       isLocked: false,
       gameOver: false,
     });
@@ -60,6 +62,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     set({
       tiles: newState.tiles,
       score: newState.score,
+      bestScore: newState.bestScore,
       gameOver: newState.gameOver,
     });
 
@@ -98,5 +101,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
   setTiles: (tiles) => set({ tiles }),
   setScore: (score) => set({ score }),
+  setBestScore: (bestScore) => set({ bestScore }),
   setGameOver: (gameOver) => set({ gameOver }),
 }));

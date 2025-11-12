@@ -6,6 +6,7 @@ export function createInitialState(): GameState {
     tiles: [],
     size: GRID_SIZE,
     score: 0,
+    bestScore: 0,
     isLocked: false,
     gameOver: false,
   };
@@ -93,7 +94,15 @@ function moveLeft(state: GameState): GameState {
     }
   }
 
-  return { ...state, tiles: newTiles, score: state.score + scoreIncrease };
+  const updatedScore = state.score + scoreIncrease;
+  const updatedBest = Math.max(state.bestScore, updatedScore);
+
+  return {
+    ...state,
+    tiles: newTiles,
+    score: updatedScore,
+    bestScore: updatedBest,
+  };
 }
 
 function transformForDirection(tile: Tile, dir: Direction, size: number): Tile {
