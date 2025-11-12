@@ -4,20 +4,25 @@ import { useEffect } from 'react';
 export const useKeyboardInput = (onMove: (direction: Direction) => void) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'ArrowUp':
+      // Support both arrow keys and gamer-favorite WASD controls.
+      switch (event.key.toLowerCase()) {
+        case 'arrowup':
+        case 'w':
           event.preventDefault();
           onMove(Direction.Up);
           break;
-        case 'ArrowDown':
+        case 'arrowdown':
+        case 's':
           event.preventDefault();
           onMove(Direction.Down);
           break;
-        case 'ArrowLeft':
+        case 'arrowleft':
+        case 'a':
           event.preventDefault();
           onMove(Direction.Left);
           break;
-        case 'ArrowRight':
+        case 'arrowright':
+        case 'd':
           event.preventDefault();
           onMove(Direction.Right);
           break;
