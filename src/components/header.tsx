@@ -14,7 +14,7 @@ import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { Menu, Plus } from 'lucide-react';
 import { useCallback } from 'react';
 import { ThemeToggle } from './theme-toggle';
-import { Button } from './ui/button';
+import { motion } from 'motion/react';
 
 export function Header() {
   const score = useGameStore((state) => state.score);
@@ -29,10 +29,10 @@ export function Header() {
     <div className="flex w-full justify-center">
       <div className="flex items-center" style={{ width: BOARD_SIZE }}>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-12 h-12">
-              <Menu />
-            </Button>
+          <DropdownMenuTrigger asChild className='m-4 '>
+            <motion.div whileHover={{scale: 1.1}}>
+              <Menu/>
+            </motion.div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuGroup>
