@@ -51,6 +51,49 @@ export function addRandomTile(state: GameState): GameState {
   return { ...state, tiles: [...state.tiles, newTile] };
 }
 
+/**
+ * Returns true when at least one move is possible.
+ * Quick check: if any free position exists, a move is possible.
+ * Otherwise check horizontal and vertical neighbors for equal values.
+ */
+export function hasPossibleMoves(state: GameState): boolean {
+  // If there's at least one free cell, a move is possible
+  if (getFreePositions(state).length > 0) return true;
+
+  const { size, tiles } = state;
+
+  // Build a lookup map for occupied tiles (ignore tiles that are merging)
+  const lookup = new Map<string, Tile>();
+  tiles
+    .filter((t) => !t.isMerging)
+    .forEach((t) => {
+      lookup.set(`${t.row},${t.col}`, t);
+    });
+
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+      const key = `${row},${col}`;
+      const tile = lookup.get(key);
+      if (!tile) continue;
+
+      // Check right neighbor (avoid duplicate checks by only checking right and down)
+      if (col + 1 < size) {
+        const right = lookup.get(`${row},${col + 1}`);
+        if (right && right.value === tile.value) return true;
+      }
+
+      // Check down neighbor
+      if (row + 1 < size) {
+        const down = lookup.get(`${row + 1},${col}`);
+        if (down && down.value === tile.value) return true;
+      }
+    }
+  }
+
+  // No free cells and no adjacent equal tiles => no moves
+  return false;
+}
+
 function moveLeft(state: GameState): GameState {
   const { size } = state;
   const newTiles: Tile[] = [];

@@ -3,6 +3,7 @@ import {
   addRandomTile,
   createInitialState,
   createInitialTiles,
+  hasPossibleMoves,
   move,
 } from '@/lib/game-logic';
 import { Direction, GameState, Tile } from '@/lib/types';
@@ -87,7 +88,11 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
         finalTiles = stateWithNewTile.tiles;
       }
 
-      set({ tiles: finalTiles, isLocked: false });
+      // Compute final state and check for possible moves (game over)
+      const finalState = { ...currentState, tiles: finalTiles };
+      const gameOver = !hasPossibleMoves(finalState);
+
+      set({ tiles: finalTiles, isLocked: false, gameOver });
     }, MOVE_ANIMATION_DURATION);
   },
 

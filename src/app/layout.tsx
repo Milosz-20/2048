@@ -36,9 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 py-6 sm:px-6 lg:px-8">
-            <header>
               <Header />
-            </header>
             <main className="flex justify-center pt-10">{children}</main>
           </div>
         </ThemeProvider>

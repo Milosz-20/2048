@@ -10,7 +10,7 @@ export const TILE_GAP = 8; // odstęp między kafelkami w px
 export const TILE_PADDING = 2; // padding wewnętrzny kafelka w px
 
 // Animacje
-export const MOVE_ANIMATION_DURATION = 150; // czas trwania animacji ruchu kafelków w ms
+export const MOVE_ANIMATION_DURATION = 100; // czas trwania animacji ruchu kafelków w ms
 export const TILE_ANIMATION_SCALE_NEW = 0.95; // początkowa skala dla nowych kafelków
 export const TILE_ANIMATION_SCALE_NORMAL = 1; // normalna skala kafelków
 export const TILE_ANIMATION_SCALE_MERGED = 1.05; // skala kafelków po zmergowaniu (efekt "pop")
