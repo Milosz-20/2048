@@ -19,6 +19,9 @@ export const TILE_ANIMATION_SCALE_EXIT = 0.95; // skala kafelków podczas znikan
 // Obliczone wymiary
 export const BOARD_SIZE = GRID_SIZE * TILE_SIZE + (GRID_SIZE + 1) * TILE_GAP; // całkowity rozmiar planszy
 
+// Docelowa wartość potrzebna do wygranej rundy
+export const WINNING_TILE_VALUE = 2048;
+
 // Style dla różnych wartości kafelków
 export const TILE_COLORS: Record<number, string> = {
   2: 'bg-amber-100',

@@ -6,13 +6,14 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { BOARD_SIZE } from '@/lib/game-config';
 import { useGameStore } from '@/store/use-game-store';
-import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { Menu, Plus } from 'lucide-react';
 import { useCallback } from 'react';
+import { Button } from './ui/button';
 import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
@@ -41,6 +42,7 @@ export function Header() {
             <ThemeToggle />
           </DropdownMenuContent>
         </DropdownMenu>
+
         <div className="ml-auto flex items-center gap-4">
           <ScoreDisplay
             label="SCORE"

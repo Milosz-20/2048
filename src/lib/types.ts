@@ -15,6 +15,7 @@ export interface GameState {
   bestScore: number;
   isLocked: boolean; // Czy użytkownik może wykonać ruch (blokada podczas animacji)
   gameOver?: boolean; // Czy gra się skończyła (brak możliwych ruchów)
+  gameWon?: boolean; // Czy osiągnięto docelową wartość kafelka
 }
 
 export interface Position {

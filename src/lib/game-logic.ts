@@ -9,6 +9,7 @@ export function createInitialState(): GameState {
     bestScore: 0,
     isLocked: false,
     gameOver: false,
+    gameWon: false,
   };
 }
 

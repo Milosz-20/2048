@@ -1,4 +1,4 @@
-import { MOVE_ANIMATION_DURATION } from '@/lib/game-config';
+import { MOVE_ANIMATION_DURATION, WINNING_TILE_VALUE } from '@/lib/game-config';
 import {
   addRandomTile,
   createInitialState,
@@ -35,6 +35,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
       bestScore: get().bestScore,
       isLocked: false,
       gameOver: false,
+      gameWon: false,
     });
   },
 
@@ -60,11 +61,18 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     const hasChanged = oldPositions !== newPositions;
 
     // Ustaw nowy stan BEZ dodawania nowego kafelka
+    const hasReachedWinningTile =
+      state.gameWon ||
+      newState.tiles.some(
+        (tile) => !tile.isMerging && tile.value >= WINNING_TILE_VALUE
+      );
+
     set({
       tiles: newState.tiles,
       score: newState.score,
       bestScore: newState.bestScore,
       gameOver: newState.gameOver,
+      gameWon: hasReachedWinningTile,
     });
 
     setTimeout(() => {
