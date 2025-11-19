@@ -32,9 +32,12 @@ export const TILE_COLORS: Record<number, string> = {
   64: 'bg-red-500',
   128: 'bg-yellow-400',
   256: 'bg-yellow-500',
-  512: 'bg-yellow-600',
-  1024: 'bg-yellow-700',
-  2048: 'bg-yellow-800',
+  512: 'bg-amber-400',
+  1024: 'bg-amber-500',
+  2048: 'bg-orange-500',
+  4096: 'bg-rose-500',
+  8192: 'bg-red-600',
+  16384: 'bg-red-700',
 };
 
 // Kolory tekstu - ciemny dla jasnych tła, jasny dla ciemnych tła
