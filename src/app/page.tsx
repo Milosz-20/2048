@@ -55,6 +55,7 @@ export default function Game() {
             <Tile key={tile.id} tile={tile} />
           ))}
         </AnimatePresence>
+        
       </TileContainer>
 
       <AnimatePresence>

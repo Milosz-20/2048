@@ -33,9 +33,6 @@ export function ThemeToggle() {
         : <Sun className="h-4 w-4" />}
         <span>{isDark ? 'Dark theme' : 'Light theme'}</span>
       </span>
-      <span className="rounded-full border border-muted-foreground/30 bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-        {isDark ? 'On' : 'Off'}
-      </span>
     </DropdownMenuItem>
   );
 }

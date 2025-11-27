@@ -22,10 +22,8 @@ interface GameActions {
 }
 
 export const useGameStore = create<GameState & GameActions>((set, get) => ({
-  // --- STAN POCZĄTKOWY ---
   ...createInitialState(),
 
-  // --- PODSTAWOWE AKCJE ---
   newGame: () => {
     const initialState = createInitialState();
     const freshTiles = createInitialTiles(initialState);
@@ -47,7 +45,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
     const newState = move(state, direction);
 
-    // Sprawdź czy coś się zmieniło - porównaj pozycje kafelków i ilość (merge)
     const oldPositions = state.tiles
       .filter((t) => !t.isMerging)
       .map((t) => `${t.id}:${t.row},${t.col}`)
@@ -60,7 +57,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
       .join('|');
     const hasChanged = oldPositions !== newPositions;
 
-    // Ustaw nowy stan BEZ dodawania nowego kafelka
     const hasReachedWinningTile =
       state.gameWon ||
       newState.tiles.some(
@@ -76,17 +72,14 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     });
 
     setTimeout(() => {
-      // Usuń tile'y oznaczone jako isMerging i flagi animacji po zakończeniu animacji
       const currentState = get();
       const tilesWithoutMerging = currentState.tiles
         .filter((tile) => !tile.isMerging)
         .map((tile) => {
-          // Usuń flagi animacji po zakończeniu
           const { mergedFrom, isNew, ...cleanTile } = tile;
           return cleanTile;
         });
 
-      // Dodaj nowy kafelek DOPIERO PO zakończeniu animacji
       let finalTiles = tilesWithoutMerging;
       if (hasChanged) {
         const stateWithNewTile = addRandomTile({
@@ -96,7 +89,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
         finalTiles = stateWithNewTile.tiles;
       }
 
-      // Compute final state and check for possible moves (game over)
       const finalState = { ...currentState, tiles: finalTiles };
       const gameOver = !hasPossibleMoves(finalState);
 
